@@ -135,6 +135,9 @@
 			#site-nav.open .nav-toggle span:nth-child(2) { top: 19.5px; transform: rotate(-45deg); }
 
 			@media screen and (max-width: 980px) {
+				/* Keep the banner photo from sliding under the fixed bar */
+				#wrapper { padding-top: var(--nav-h); }
+
 				#site-nav { padding: 0 1.25rem; }
 				#site-nav .nav-toggle { display: block; }
 
@@ -169,7 +172,7 @@
 
 		<!-- Navigation -->
 			<nav id="site-nav" aria-label="Main navigation">
-				<a href="#about" class="nav-brand"></a>
+				<a href="#about" class="nav-brand">Ina Campan</a>
 				<button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
 					<span></span><span></span>
 				</button>
