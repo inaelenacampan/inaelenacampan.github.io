@@ -11,14 +11,182 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<!-- Navigation menu styles (can be moved into assets/css/main.css) -->
+		<style>
+			:root {
+				--nav-h: 64px;
+				--nav-ink: #2b2b2b;
+				--nav-muted: #8a8a8a;
+			}
+
+			html { scroll-behavior: smooth; }
+			[data-nav] { scroll-margin-top: var(--nav-h); }
+
+			#site-nav {
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				z-index: 10000;
+				height: var(--nav-h);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 2.5rem;
+				background: rgba(255, 255, 255, 0.55);
+				-webkit-backdrop-filter: saturate(180%) blur(14px);
+				backdrop-filter: saturate(180%) blur(14px);
+				transition: background 0.4s ease, box-shadow 0.4s ease;
+			}
+
+			#site-nav.scrolled {
+				background: rgba(255, 255, 255, 0.88);
+				box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 8px 24px -16px rgba(0, 0, 0, 0.15);
+			}
+
+			#site-nav .nav-brand {
+				position: relative;
+				z-index: 2;
+				font-size: 0.75rem;
+				font-weight: 600;
+				letter-spacing: 0.3em;
+				text-transform: uppercase;
+				color: var(--nav-ink);
+				text-decoration: none;
+				border: 0;
+			}
+
+			#site-nav .nav-links {
+				display: flex;
+				gap: 2.25rem;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			#site-nav .nav-links li {
+				margin: 0;
+				padding: 0;
+			}
+
+			#site-nav .nav-links a {
+				position: relative;
+				display: inline-block;
+				padding: 0.35rem 0;
+				font-size: 0.7rem;
+				letter-spacing: 0.22em;
+				text-transform: uppercase;
+				color: var(--nav-muted);
+				text-decoration: none;
+				border: 0;
+				transition: color 0.3s ease;
+			}
+
+			#site-nav .nav-links a::after {
+				content: "";
+				position: absolute;
+				left: 0; bottom: 0;
+				width: 100%;
+				height: 1px;
+				background: var(--nav-ink);
+				transform: scaleX(0);
+				transform-origin: right;
+				transition: transform 0.35s ease;
+			}
+
+			#site-nav .nav-links a:hover,
+			#site-nav .nav-links a.active {
+				color: var(--nav-ink);
+			}
+
+			#site-nav .nav-links a:hover::after,
+			#site-nav .nav-links a.active::after {
+				transform: scaleX(1);
+				transform-origin: left;
+			}
+
+			/* Hamburger button (reset Story's button styles) */
+			#site-nav .nav-toggle {
+				display: none;
+				position: relative;
+				z-index: 2;
+				width: 40px !important;
+				min-width: 0 !important;
+				height: 40px !important;
+				padding: 0 !important;
+				line-height: normal !important;
+				background: transparent !important;
+				box-shadow: none !important;
+				border: 0;
+				cursor: pointer;
+			}
+
+			#site-nav .nav-toggle span {
+				position: absolute;
+				left: 10px; right: 10px;
+				height: 1.5px;
+				background: var(--nav-ink);
+				transition: transform 0.35s ease, top 0.35s ease;
+			}
+
+			#site-nav .nav-toggle span:nth-child(1) { top: 16px; }
+			#site-nav .nav-toggle span:nth-child(2) { top: 23px; }
+
+			#site-nav.open .nav-toggle span:nth-child(1) { top: 19.5px; transform: rotate(45deg); }
+			#site-nav.open .nav-toggle span:nth-child(2) { top: 19.5px; transform: rotate(-45deg); }
+
+			@media screen and (max-width: 980px) {
+				#site-nav { padding: 0 1.25rem; }
+				#site-nav .nav-toggle { display: block; }
+
+				#site-nav .nav-links {
+					position: fixed;
+					top: 0; left: 0;
+					width: 100vw;
+					height: 100vh;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					gap: 2rem;
+					background: rgba(255, 255, 255, 0.97);
+					opacity: 0;
+					visibility: hidden;
+					transition: opacity 0.35s ease, visibility 0.35s ease;
+				}
+
+				#site-nav.open .nav-links {
+					opacity: 1;
+					visibility: visible;
+				}
+
+				#site-nav .nav-links a {
+					font-size: 0.95rem;
+					color: var(--nav-ink);
+				}
+			}
+		</style>
 	</head>
 	<body class="is-preload">
+
+		<!-- Navigation -->
+			<nav id="site-nav" aria-label="Main navigation">
+				<a href="#about" class="nav-brand"></a>
+				<button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+					<span></span><span></span>
+				</button>
+				<ul class="nav-links" id="nav-links">
+					<li><a href="#about">About</a></li>
+					<li><a href="#education">Education</a></li>
+					<li><a href="#experience">Experience</a></li>
+					<li><a href="#projects">Projects</a></li>
+					<li><a href="#skills">Skills</a></li>
+				</ul>
+			</nav>
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="divided">
 
 				<!-- My Portfolio : Description -->
-					<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+					<section id="about" data-nav="about" class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 						<div class="content">
 							<h1>Ina Campan | Data, Statistics & Health</h1>
 							<p class="major">About Me
@@ -35,8 +203,14 @@
 								<li><a href="assets/download/CV_EN.pdf" class="button icon solid fa-download" target = "_blank" rel = "noopener noreferrer">English Resume</a></li>
 							</ul>
 
-						<p><code>(Version : October 2026)</code>
-						
+						<p>Last updated: October 2026</p>
+						<div class="inner">
+							<ul class="icons">
+								<li><a href = "https://github.com/inaelenacampan" target = "_blank" rel = "noopener noreferrer" class = "icon brands style2 fa-github"><span class = "label">GitHub</span></a></li>
+								<li><a href="https://www.linkedin.com/in/ina-campan/" target = "_blank" rel = "noopener noreferrer" class="icon brands style2 fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+								<li><a href="mailto:inacampan@gmail.com" target = "_blank" rel = "noopener noreferrer" class="icon style2 fa-envelope"><span class="label">Email</span></a></li>
+							</ul>
+						</div>
 						</div>
 						<div class="image">
 							<img src="images/banner.png" alt="" />
@@ -45,7 +219,7 @@
 			
 				<!-- Education : ENSAE + Sorbonne University -->
 
-					<section class="wrapper style1 align-center">
+					<section id="education" data-nav="education" class="wrapper style1 align-center">
 						<div class="inner">
 							<h2>Education</h2>
 							<p>My academic journey so far.</p>
@@ -97,7 +271,7 @@
 						</section>
 				
 				<!-- EMBL EBI -->
-					<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in" id="first">
+					<section id="experience" data-nav="experience" class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
 							<h2>EMBL EBI - Research Trainee</h2>
 							<p>As a scholar of the French Embassy Program, I joined the Pathogen Informatics and Modelling group, where my main project focused on methods for bacterial pangenome construction. I developed a benchmarking pipeline of 9 methods to evaluate pangenome clustering on both simulated and real data. The real dataset focuses on Streptococcus pneumoniae genomes collected from children under five years old in Southampton (UK). The 6 simulated datasets were generated using the Infinitely Many Genes (IMG) model.</p>
@@ -112,7 +286,7 @@
 					</section>
 
 				<!-- College de France -->
-					<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+					<section data-nav="experience" class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
 							<h2>Collège de France - Research assistant</h2>
 							<p>During my first year at ENSAE, I interned at Collège de France under the supervision of Samuel Alizon and Olivier Supplisson. I deployed an R-Shiny interface to visualise the spatial epidemiology of genital ulcers attributable to herpes simplex viruses in France. This project required understanding the epidemiological context, mastering advanced statistical methods—including hierarchical Bayesian modelling and generalised additive models. I was also introduced to addressing spatial confounding through the implementation of various spatial models using INLA and inlabru. I also conducted simulations to compare model performance and ensure robustness of the results.</p>
@@ -126,7 +300,7 @@
 					</section>
 				
 				<!-- OLYMPIC FAMILY ASSISTANT -->
-					<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in" id="first">
+					<section data-nav="experience" class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
 							<h2>Olympic Family Assistant</h2>
 							<p>During the Paris 2024 Olympic Games, I accompanied an assigned member of the Olympic Family (IOC members, International Federations Presidents and Secretaries General and National Olympic Committees) on his/her activities, facilitating logistics and organization. I also provided linguistic assistance to the assigned member, Mr. Barry Hendricks (President of the South African Sports Confederation, Olympic and Paralympic Committee - SASCOC).</p>
@@ -141,7 +315,7 @@
 					</section>
 
 				<!-- University Tutor -->
-					<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+					<section data-nav="experience" class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
 							<h2>University Tutor and Mathematics Teacher</h2>
 							<p>During my third year as a Bachelor at Sorbonne (from September 2023 to June 2024), for 2 hours weekly, I carried out tutoring sessions in Data science and Advanced mathematics for around twenty first-year students. I was working on the improvement of students' working methods and was constantly searching for new teaching techniques.
@@ -155,7 +329,7 @@
 					</section>
 
 				<!-- Volunteer for Adfaber -->
-					<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
+					<section data-nav="experience" class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
 							<h2>Volunteer for Adfaber (online)</h2>
 							<p>Adfaber, a Romanian NGO, believes in building communities through technology and is committed to helping people, especially young people, understand and learn how to use technology for a better life. During my second and third year as a Bachelor, I created courses (e.g. Introduction to programming) and online scientific workshops for Romanian high school students. I also participated as a judge in the international competition Technovation Girls (2023 edition).</p>
@@ -173,7 +347,7 @@
 				
 					<!-- Projects Gallery-->
 
-				<section class="wrapper style1 align-center">
+				<section id="projects" data-nav="projects" class="wrapper style1 align-center">
 					<div class="inner">
 						<h2>My Projects</h2>
 						
@@ -271,7 +445,7 @@
 				
 
 				<!-- Skills -->
-					<section class="wrapper style1 align-center">
+					<section id="skills" data-nav="skills" class="wrapper style1 align-center">
 						<div class="inner">
 							<h2>Technical Skills</h2>
 							
@@ -316,18 +490,13 @@
 									<h3>SAS </h3>
 									<p>Intermediate : Data analysis, visualisation </p>
 								</section>
-								
+							</div>
+						</div>
 					</section>
 
 				<!-- Footer -->
 					<footer class="wrapper style1 align-center">
 						<div class="inner">
-							<ul class="icons">
-								<li><a href = "https://github.com/inaelenacampan" target = "_blank" rel = "noopener noreferrer" class = "icon brands style2 fa-github"><span class = "label">GitHub</span></a></li>
-								<li><a href="https://www.linkedin.com/in/ina-campan/" target = "_blank" rel = "noopener noreferrer" class="icon brands style2 fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-								<li><a href="mailto:inacampan@gmail.com" target = "_blank" rel = "noopener noreferrer" class="icon style2 fa-envelope"><span class="label">Email</span></a></li>
-								<li><a href="https://www.instagram.com/ina_campan/" target = "_blank" rel = "noopener noreferrer" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-							</ul>
 							<p>&copy; inaelenacampan. Design: <a href="https://html5up.net" target = "_blank" rel = "noopener noreferrer">HTML5 UP</a>.<br>
 							Portrait : &copy; <a href="https://blocquauxpro.com/" target = "_blank" rel = "noopener noreferrer">Vincent Blocquaux.</a> </p>
 						</div>
@@ -344,7 +513,58 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+		<!-- Navigation menu script -->
+			<script>
+				(function () {
+					var nav = document.getElementById('site-nav');
+					var toggle = nav.querySelector('.nav-toggle');
+					var links = nav.querySelectorAll('.nav-links a');
+
+					// Frosted background gets denser once the page scrolls
+					function onScroll() {
+						nav.classList.toggle('scrolled', window.scrollY > 40);
+					}
+					window.addEventListener('scroll', onScroll, { passive: true });
+					onScroll();
+
+					// Mobile menu open / close
+					function setOpen(open) {
+						nav.classList.toggle('open', open);
+						toggle.setAttribute('aria-expanded', open);
+						toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+						document.body.style.overflow = open ? 'hidden' : '';
+					}
+					toggle.addEventListener('click', function () {
+						setOpen(!nav.classList.contains('open'));
+					});
+					links.forEach(function (a) {
+						a.addEventListener('click', function () { setOpen(false); });
+					});
+					document.addEventListener('keydown', function (e) {
+						if (e.key === 'Escape') setOpen(false);
+					});
+
+					// Highlight the link of the section currently on screen
+					var map = {};
+					links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+
+					if ('IntersectionObserver' in window) {
+						var observer = new IntersectionObserver(function (entries) {
+							entries.forEach(function (entry) {
+								if (!entry.isIntersecting) return;
+								var target = map[entry.target.getAttribute('data-nav')];
+								if (!target) return;
+								links.forEach(function (l) { l.classList.remove('active'); });
+								target.classList.add('active');
+							});
+						}, { rootMargin: '-45% 0px -50% 0px' });
+
+						document.querySelectorAll('[data-nav]').forEach(function (el) {
+							observer.observe(el);
+						});
+					}
+				})();
+			</script>
+
 	</body>
 </html>
-
-
